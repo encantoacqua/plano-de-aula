@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Aula — Escola de Natação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep: #0E3A53;
+    --teal: #1F8A8C;
+    --foam: #F6FAFA;
+    --ink: #16232B;
+    --line: #C7D3D4;
+    --paper: #FFFFFF;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html,body{
+    margin:0;
+    background: var(--foam);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+
+  .wave{
+    background: var(--deep);
+    color: #fff;
+    padding: 2.6rem 1.5rem 3.4rem;
+    position: relative;
+  }
+  .wave-inner{
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .wave h1{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    margin: 0 0 .35rem;
+    letter-spacing: -0.01em;
+  }
+  .wave p{
+    margin: 0;
+    color: #CFE3E8;
+    font-size: 0.98rem;
+    max-width: 46ch;
+  }
+  .wave svg{
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    width: 100%; height: 32px;
+    display: block;
+  }
+
+  main{
+    max-width: 760px;
+    margin: -1.6rem auto 3rem;
+    padding: 0 1.5rem;
+  }
+
+  .sheet{
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1.9rem 1.9rem 1.6rem;
+    box-shadow: 0 12px 30px -20px rgba(14,58,83,0.35);
+  }
+
+  .row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+  .row > div{ flex: 1 1 220px; }
+  .row.four > div{ flex: 1 1 140px; }
+
+  label{
+    display:block;
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--deep);
+    margin-bottom: .32rem;
+  }
+  label .req{ color: var(--teal); font-weight: 600; }
+  label .auto{
+    font-weight: 500;
+    color: #6C7B82;
+    font-size: 0.78rem;
+  }
+
+  input[type=text], input[type=number], textarea{
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: .55rem .65rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--paper);
+  }
+  input:focus, textarea:focus{
+    outline: 2px solid var(--teal);
+    outline-offset: 1px;
+    border-color: var(--teal);
+  }
+  input[readonly]{
+    background: #EEF3F3;
+    color: #4B5A61;
+  }
+
+  .field-block{ margin-bottom: 1.3rem; }
+  textarea{ resize: vertical; line-height: 1.5; }
+
+  .section-title{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--deep);
+    margin: 1.9rem 0 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .section-title:first-of-type{ border-top: none; padding-top: 0; margin-top: 0; }
+
+  .actions{
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap;
+    margin-top: 1.8rem;
+    align-items: center;
+  }
+  button{
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: .68rem 1.15rem;
+    border-radius: 7px;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  button:disabled{ opacity: 0.55; cursor: not-allowed; }
+  .btn-primary{
+    background: var(--teal);
+    color: #fff;
+  }
+  .btn-primary:hover{ background: #187577; }
+  .btn-secondary{
+    background: transparent;
+    border-color: var(--line);
+    color: var(--deep);
+  }
+  .btn-secondary:hover{ background: #EEF4F4; }
+  .btn-link{
+    background: none;
+    border: none;
+    color: #6C7B82;
+    text-decoration: underline;
+    padding: .3rem 0;
+    font-weight: 500;
+    font-size: 0.85rem;
+  }
+
+  .hint{
+    font-size: 0.82rem;
+    color: #5B6B72;
+    margin-top: .6rem;
+  }
+
+  .status{
+    font-size: 0.88rem;
+    margin-top: .9rem;
+    min-height: 1.2em;
+    font-weight: 600;
+  }
+  .status.ok{ color: var(--teal); }
+  .status.err{ color: #B3261E; }
+
+  footer{
+    text-align: center;
+    font-size: 0.8rem;
+    color: #6C7B82;
+    padding-bottom: 2rem;
+  }
+</style>
+</head>
+<body>
+
+  <div class="wave">
+    <div class="wave-inner">
+      <h1>Plano de Aula — Escola de Natação</h1>
+      <p>Preencha os campos abaixo. Ao enviar, uma cópia da aula é salva automaticamente como um documento na pasta do Google Drive da escola — data e horário são registrados automaticamente.</p>
+    </div>
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+      <path d="M0,30 C 240,60 480,0 720,20 C 960,40 1200,10 1440,30 L1440,60 L0,60 Z" fill="#F6FAFA"></path>
+    </svg>
+  </div>
+
+  <main>
+    <form class="sheet" id="planoForm" onsubmit="return false;">
+
+      <div class="section-title" style="border-top:none;padding-top:0;margin-top:0;">Identificação</div>
+      <div class="field-block">
+        <label for="nomeAluno">Nome do Aluno <span class="req">*</span></label>
+        <input type="text" id="nomeAluno" placeholder="Nome completo do aluno">
+      </div>
+      <div class="row four">
+        <div>
+          <label for="turma">Turma</label>
+          <input type="text" id="turma" placeholder="Ex: Baby 2">
+        </div>
+        <div>
+          <label for="idade">Idade</label>
+          <input type="text" id="idade" placeholder="Ex: 4–5 anos">
+        </div>
+        <div>
+          <label for="data">Data <span class="auto">(automático)</span></label>
+          <input type="text" id="data" readonly>
+        </div>
+        <div>
+          <label for="horario">Horário <span class="auto">(automático)</span></label>
+          <input type="text" id="horario" readonly>
+        </div>
+      </div>
+
+      <div class="section-title">Conteúdo da aula</div>
+
+      <div class="field-block">
+        <label for="tema">Tema</label>
+        <input type="text" id="tema" placeholder="Assunto/foco central da aula">
+      </div>
+
+      <div class="field-block">
+        <label for="habGeral">Habilidade Geral</label>
+        <textarea id="habGeral" rows="2" placeholder="Objetivo mais amplo trabalhado na aula"></textarea>
+      </div>
+
+      <div class="field-block">
+        <label for="habAquatica">Habilidade Aquática</label>
+        <textarea id="habAquatica" rows="2" placeholder="Habilidade específica no meio aquático"></textarea>
+      </div>
+
+      <div class="field-block">
+        <label for="duracao">Duração <span class="req">*</span></label>
+        <input type="text" id="duracao" placeholder="Ex: 45 minutos">
+      </div>
+
+      <div class="section-title">Execução</div>
+
+      <div class="field-block">
+        <label for="procedimento">Procedimento <span class="req">*</span></label>
+        <textarea id="procedimento" rows="7" placeholder="Descreva o passo a passo da aula. Pode escrever em texto corrido ou numerar as etapas."></textarea>
+      </div>
+
+      <div class="field-block">
+        <label for="materiais">Materiais <span class="req">*</span></label>
+        <textarea id="materiais" rows="4" placeholder="Liste os materiais necessários"></textarea>
+      </div>
+
+      <div class="section-title">Responsáveis</div>
+      <div class="row">
+        <div>
+          <label for="professor">Professor(a)</label>
+          <input type="text" id="professor">
+        </div>
+        <div>
+          <label for="coordenador">Coordenador(a)</label>
+          <input type="text" id="coordenador">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn-primary" id="btnEnviar" onclick="enviarPlano()">Enviar plano</button>
+        <button type="button" class="btn-secondary" onclick="baixarPlano()">Baixar (.doc)</button>
+        <button type="button" class="btn-secondary" onclick="imprimirPlano()">Imprimir / PDF</button>
+      </div>
+      <div class="actions" style="margin-top:.4rem;">
+        <button type="button" class="btn-link" onclick="limparFormulario()">Limpar formulário</button>
+      </div>
+      <div class="status" id="status" role="status"></div>
+    </form>
+    <footer>Data e horário são preenchidos automaticamente pelo dispositivo no momento do envio.</footer>
+  </main>
+
+<script>
+// URL fixa do Web App do Apps Script. Só é alterável editando este arquivo
+// (não existe mais campo na tela para trocar), evitando que alguém mude
+// o destino dos envios sem querer.
+const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzJbAFTfYoHnThkNletlkVbYFI91bhPK9ed5PTTXiLYFfdLdKYFCpZ0iBKTSeUzxnnK/exec";
+
+function pad2(n){ return n.toString().padStart(2, '0'); }
+
+function atualizarDataHora(){
+  const agora = new Date();
+  document.getElementById('data').value = `${pad2(agora.getDate())}/${pad2(agora.getMonth()+1)}/${agora.getFullYear()}`;
+  document.getElementById('horario').value = `${pad2(agora.getHours())}:${pad2(agora.getMinutes())}`;
+}
+atualizarDataHora();
+
+function val(id){
+  return document.getElementById(id).value.trim();
+}
+
+function escapeHtml(str){
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function multiline(str){
+  return escapeHtml(str).replace(/\n/g, "<br>") || "&nbsp;";
+}
+
+function sanitizeFileName(str){
+  return (str || "")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+}
+
+function coletarDados(){
+  return {
+    nomeAluno: val('nomeAluno'),
+    turma: val('turma'),
+    idade: val('idade'),
+    data: val('data'),
+    horario: val('horario'),
+    tema: val('tema'),
+    habGeral: val('habGeral'),
+    habAquatica: val('habAquatica'),
+    duracao: val('duracao'),
+    procedimento: val('procedimento'),
+    materiais: val('materiais'),
+    professor: val('professor'),
+    coordenador: val('coordenador'),
+  };
+}
+
+function buildDocHtml(){
+  const d = coletarDados();
+  const boxStyle = "border:1px solid #000;padding:8px 10px;margin-bottom:14px;";
+  const labelStyle = "font-weight:bold;display:block;margin-bottom:6px;";
+
+  return `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+  <head><meta charset='utf-8'><title>Plano de Aula</title></head>
+  <body style="font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#000;">
+    <h2 style="margin-bottom:4px;">PLANO DE AULA — ESCOLA DE NATAÇÃO</h2>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:14px;">
+      <tr>
+        <td style="padding:2px 0;"><b>ALUNO:</b> ${escapeHtml(d.nomeAluno) || "&nbsp;"}</td>
+        <td style="padding:2px 0;"><b>TURMA:</b> ${escapeHtml(d.turma) || "&nbsp;"}</td>
+      </tr>
+      <tr>
+        <td style="padding:2px 0;"><b>IDADE:</b> ${escapeHtml(d.idade) || "&nbsp;"}</td>
+        <td style="padding:2px 0;"></td>
+      </tr>
+      <tr>
+        <td style="padding:2px 0;"><b>DATA:</b> ${escapeHtml(d.data) || "&nbsp;"}</td>
+        <td style="padding:2px 0;"><b>HORÁRIO:</b> ${escapeHtml(d.horario) || "&nbsp;"}</td>
+      </tr>
+    </table>
+
+    <div style="${boxStyle}"><span style="${labelStyle}">Tema:</span>${multiline(d.tema)}</div>
+    <div style="${boxStyle}"><span style="${labelStyle}">Habilidade Geral:</span>${multiline(d.habGeral)}</div>
+    <div style="${boxStyle}"><span style="${labelStyle}">Habilidade Aquática:</span>${multiline(d.habAquatica)}</div>
+    <p><b>*Duração:</b> ${escapeHtml(d.duracao) || "&nbsp;"}</p>
+    <div style="${boxStyle}"><span style="${labelStyle}">*Procedimento:</span>${multiline(d.procedimento)}</div>
+    <div style="${boxStyle}"><span style="${labelStyle}">*Materiais:</span>${multiline(d.materiais)}</div>
+
+    <p style="margin-top:24px;"><b>Professor(a):</b> ${escapeHtml(d.professor) || "____________________________"}</p>
+    <p><b>Coordenador(a):</b> ${escapeHtml(d.coordenador) || "____________________________"}</p>
+  </body>
+  </html>`;
+}
+
+function baixarPlano(){
+  const html = buildDocHtml();
+  const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const nomePart = sanitizeFileName(val('nomeAluno')) || 'aluno';
+  const dataPart = sanitizeFileName(val('data')) || 'sem_data';
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Plano_de_Aula_${nomePart}_${dataPart}.doc`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showStatus('Arquivo baixado. Verifique a pasta de downloads do seu dispositivo.', 'ok');
+}
+
+function imprimirPlano(){
+  const html = buildDocHtml();
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 300);
+}
+
+async function enviarPlano(){
+  atualizarDataHora(); // registra o horário exato do envio
+
+  if (!WEBHOOK_URL){
+    showStatus('WEBHOOK_URL não configurada no arquivo.', 'err');
+    return;
+  }
+  if (!val('nomeAluno')){
+    showStatus('Informe o nome do aluno antes de enviar.', 'err');
+    document.getElementById('nomeAluno').focus();
+    return;
+  }
+
+  const btn = document.getElementById('btnEnviar');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  const dados = coletarDados();
+
+  try {
+    // O Apps Script Web App não responde com CORS liberado, então usamos
+    // no-cors: a requisição chega e é processada, mas não conseguimos ler a resposta.
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(dados),
+    });
+    showStatus('Enviado! O documento foi salvo na pasta do Drive.', 'ok');
+  } catch (err) {
+    showStatus('Não foi possível enviar. Verifique sua internet.', 'err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Enviar plano';
+  }
+}
+
+function limparFormulario(){
+  if(!confirm('Limpar todos os campos deste plano?')) return;
+  document.getElementById('planoForm').reset();
+  atualizarDataHora();
+  showStatus('Formulário limpo.', 'ok');
+}
+
+function showStatus(msg, kind){
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = 'status ' + (kind || '');
+  setTimeout(() => { if(el.textContent === msg) el.textContent = ''; }, 5000);
+}
+</script>
+</body>
+</html>
