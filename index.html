@@ -28,18 +28,31 @@
   .wave{
     background: var(--deep);
     color: #fff;
-    padding: 2.6rem 1.5rem 3.4rem;
+    padding: 2rem 1.5rem 3.4rem;
     position: relative;
   }
   .wave-inner{
     max-width: 760px;
     margin: 0 auto;
   }
+  .brand{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: .5rem;
+    margin-bottom: .9rem;
+  }
+  .brand img{
+    height: 96px;
+    width: auto;
+    display: block;
+  }
   .wave h1{
     font-family: 'Fraunces', serif;
     font-weight: 600;
-    font-size: clamp(1.7rem, 4vw, 2.3rem);
-    margin: 0 0 .35rem;
+    font-size: clamp(1.5rem, 3.6vw, 2.1rem);
+    margin: 0;
     letter-spacing: -0.01em;
   }
   .wave p{
@@ -75,7 +88,7 @@
     gap: 1rem 1.2rem;
     margin-bottom: 1.2rem;
   }
-  .row > div{ flex: 1 1 220px; }
+  .row > div{ flex: 1 1 220px; position: relative; }
   .row.four > div{ flex: 1 1 140px; }
 
   label{
@@ -164,6 +177,61 @@
     font-size: 0.85rem;
   }
 
+
+  /* Campo de data com calendário próprio (sempre dd/mm/aaaa) */
+  input.date-field{
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%230E3A53' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cpath d='M16 2v4M8 2v4M3 10h18'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right .7rem center;
+    padding-right: 2.3rem;
+  }
+  input.date-field[readonly]{ background-color: var(--paper); color: var(--ink); }
+
+  .cal{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: .35rem;
+    z-index: 30;
+    width: 290px;
+    max-width: 100%;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 14px 32px -12px rgba(14,58,83,0.35);
+    padding: .7rem;
+  }
+  .cal-head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: .5rem;
+    font-weight: 600;
+    color: var(--deep);
+    font-size: .95rem;
+  }
+  .cal button{
+    font-family: inherit;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--ink);
+    font-weight: 500;
+    font-size: .9rem;
+    border-radius: 6px;
+  }
+  .cal-head button{ width: 32px; height: 32px; font-size: 1.25rem; color: var(--deep); }
+  .cal-head button:hover{ background: #EEF4F4; }
+  .cal-grid{ display: flex; flex-wrap: wrap; }
+  .cal-grid > *{ width: 14.2857%; height: 32px; text-align: center; }
+  .cal-dow{ font-size: .7rem; font-weight: 600; color: #6C7B82; line-height: 32px; }
+  .cal-day:hover{ background: #EEF4F4; }
+  .cal-day.hoje{ box-shadow: inset 0 0 0 1px var(--teal); }
+  .cal-day.sel{ background: var(--teal); color: #fff; font-weight: 600; }
+  .cal-day:disabled{ color: #B8C4C6; cursor: not-allowed; background: none; opacity: 1; }
+
   .hint{
     font-size: 0.82rem;
     color: #5B6B72;
@@ -191,7 +259,10 @@
 
   <div class="wave">
     <div class="wave-inner">
-      <h1>Plano de Aula — Escola de Natação</h1>
+      <div class="brand">
+<img src="logo_acqua_encanto.jpg" style="width:200px;border-radius:12px;margin:0 auto 16px;display:block">     
+        <h1>Plano de Aula — Escola de Natação</h1>
+      </div>
       <p>Preencha os campos abaixo. Ao enviar, uma cópia da aula é salva automaticamente como um documento na pasta do Google Drive da escola — data e horário são registrados automaticamente.</p>
     </div>
     <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
@@ -202,22 +273,20 @@
   <main>
     <form class="sheet" id="planoForm" onsubmit="return false;">
 
-      <div class="section-title" style="border-top:none;padding-top:0;margin-top:0;">Identificação</div>
-      <div class="field-block">
-        <label for="nomeAluno">Nome do Aluno <span class="req">*</span></label>
-        <input type="text" id="nomeAluno" placeholder="Nome completo do aluno">
+      <div class="section-title" style="border-top:none;padding-top:0;margin-top:0;">Período</div>
+      <div class="row">
+        <div>
+          <label for="dataInicio">Data de início <span class="req">*</span></label>
+          <input type="text" id="dataInicio" class="date-field" readonly placeholder="dd/mm/aaaa" autocomplete="off">
+        </div>
+        <div>
+          <label for="dataTermino">Data de término <span class="req">*</span></label>
+          <input type="text" id="dataTermino" class="date-field" readonly placeholder="dd/mm/aaaa" autocomplete="off">
+        </div>
       </div>
-      <div class="row four">
+      <div class="row">
         <div>
-          <label for="turma">Turma</label>
-          <input type="text" id="turma" placeholder="Ex: Baby 2">
-        </div>
-        <div>
-          <label for="idade">Idade</label>
-          <input type="text" id="idade" placeholder="Ex: 4–5 anos">
-        </div>
-        <div>
-          <label for="data">Data <span class="auto">(automático)</span></label>
+          <label for="data">Data do preenchimento <span class="auto">(automático)</span></label>
           <input type="text" id="data" readonly>
         </div>
         <div>
@@ -300,6 +369,110 @@ function atualizarDataHora(){
 }
 atualizarDataHora();
 
+function formatarDataISO(iso){
+  // "2026-10-13" -> "13/10/2026"
+  if (!iso) return '';
+  const [a, m, d] = iso.split('-');
+  return `${d}/${m}/${a}`;
+}
+
+// ---------- Calendário próprio em português (dd/mm/aaaa) ----------
+const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const DIAS_SEMANA = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const cal = { el: null, input: null, ano: 0, mes: 0 };
+
+function isoDe(ano, mes, dia){ return `${ano}-${pad2(mes + 1)}-${pad2(dia)}`; }
+
+function fecharCalendario(){
+  if (cal.el) cal.el.remove();
+  cal.el = null;
+  cal.input = null;
+}
+
+function abrirCalendario(input){
+  if (cal.input === input) return;
+  fecharCalendario();
+  // Término abre no mês do início (se já escolhido); senão, no mês atual
+  const isoBase = input.dataset.iso
+    || (input.id === 'dataTermino' ? document.getElementById('dataInicio').dataset.iso : '')
+    || '';
+  const base = isoBase ? new Date(isoBase + 'T00:00:00') : new Date();
+  cal.input = input;
+  cal.ano = base.getFullYear();
+  cal.mes = base.getMonth();
+  cal.el = document.createElement('div');
+  cal.el.className = 'cal';
+  input.parentElement.appendChild(cal.el);
+  renderCalendario();
+}
+
+function renderCalendario(){
+  const { ano, mes, input } = cal;
+  const primeiroDia = new Date(ano, mes, 1).getDay();
+  const totalDias = new Date(ano, mes + 1, 0).getDate();
+  const selecionado = input.dataset.iso || '';
+  const hoje = new Date();
+  const hojeIso = isoDe(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+  // O término não pode ser antes do início
+  const minimo = input.id === 'dataTermino' ? (document.getElementById('dataInicio').dataset.iso || '') : '';
+
+  let h = `<div class="cal-head">
+    <button type="button" data-nav="-1" aria-label="Mês anterior">‹</button>
+    <span>${MESES[mes]} ${ano}</span>
+    <button type="button" data-nav="1" aria-label="Próximo mês">›</button>
+  </div><div class="cal-grid">`;
+  DIAS_SEMANA.forEach(d => { h += `<span class="cal-dow">${d}</span>`; });
+  for (let i = 0; i < primeiroDia; i++) h += '<span></span>';
+  for (let d = 1; d <= totalDias; d++){
+    const iso = isoDe(ano, mes, d);
+    const classes = 'cal-day' + (iso === selecionado ? ' sel' : '') + (iso === hojeIso ? ' hoje' : '');
+    const desab = minimo && iso < minimo ? ' disabled' : '';
+    h += `<button type="button" class="${classes}" data-iso="${iso}"${desab}>${d}</button>`;
+  }
+  h += '</div>';
+  cal.el.innerHTML = h;
+}
+
+function selecionarData(iso){
+  const input = cal.input;
+  input.dataset.iso = iso;
+  input.value = formatarDataISO(iso);
+  if (input.id === 'dataInicio'){
+    const fim = document.getElementById('dataTermino');
+    if (fim.dataset.iso && fim.dataset.iso < iso){ fim.dataset.iso = ''; fim.value = ''; }
+  }
+  fecharCalendario();
+}
+
+document.addEventListener('click', (e) => {
+  const nav = e.target.closest('[data-nav]');
+  const dia = e.target.closest('.cal-day');
+  const dentro = e.target.closest('.cal');
+  const campo = e.target.closest('.date-field');
+
+  if (nav && cal.el){
+    cal.mes += Number(nav.dataset.nav);
+    if (cal.mes < 0){ cal.mes = 11; cal.ano--; }
+    if (cal.mes > 11){ cal.mes = 0; cal.ano++; }
+    renderCalendario();
+    return;
+  }
+  if (dia && cal.el){
+    if (!dia.disabled) selecionarData(dia.dataset.iso);
+    return;
+  }
+  if (dentro) return;
+  if (campo){ abrirCalendario(campo); return; }
+  fecharCalendario();
+});
+
+document.querySelectorAll('.date-field').forEach(el => {
+  el.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); abrirCalendario(el); }
+    if (e.key === 'Escape') fecharCalendario();
+  });
+});
+
 function val(id){
   return document.getElementById(id).value.trim();
 }
@@ -324,9 +497,8 @@ function sanitizeFileName(str){
 
 function coletarDados(){
   return {
-    nomeAluno: val('nomeAluno'),
-    turma: val('turma'),
-    idade: val('idade'),
+    dataInicio: val('dataInicio'),
+    dataTermino: val('dataTermino'),
     data: val('data'),
     horario: val('horario'),
     tema: val('tema'),
@@ -351,15 +523,10 @@ function buildDocHtml(){
     <h2 style="margin-bottom:4px;">PLANO DE AULA — ESCOLA DE NATAÇÃO</h2>
     <table style="width:100%;border-collapse:collapse;margin-bottom:14px;">
       <tr>
-        <td style="padding:2px 0;"><b>ALUNO:</b> ${escapeHtml(d.nomeAluno) || "&nbsp;"}</td>
-        <td style="padding:2px 0;"><b>TURMA:</b> ${escapeHtml(d.turma) || "&nbsp;"}</td>
+        <td style="padding:2px 0;" colspan="2"><b>PERÍODO:</b> ${escapeHtml(d.dataInicio) || "&nbsp;"} a ${escapeHtml(d.dataTermino) || "&nbsp;"}</td>
       </tr>
       <tr>
-        <td style="padding:2px 0;"><b>IDADE:</b> ${escapeHtml(d.idade) || "&nbsp;"}</td>
-        <td style="padding:2px 0;"></td>
-      </tr>
-      <tr>
-        <td style="padding:2px 0;"><b>DATA:</b> ${escapeHtml(d.data) || "&nbsp;"}</td>
+        <td style="padding:2px 0;"><b>PREENCHIDO EM:</b> ${escapeHtml(d.data) || "&nbsp;"}</td>
         <td style="padding:2px 0;"><b>HORÁRIO:</b> ${escapeHtml(d.horario) || "&nbsp;"}</td>
       </tr>
     </table>
@@ -381,11 +548,11 @@ function baixarPlano(){
   const html = buildDocHtml();
   const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
   const url = URL.createObjectURL(blob);
-  const nomePart = sanitizeFileName(val('nomeAluno')) || 'aluno';
-  const dataPart = sanitizeFileName(val('data')) || 'sem_data';
+  const nomePart = sanitizeFileName(val('dataInicio')) || 'sem_inicio';
+  const dataPart = sanitizeFileName(val('dataTermino')) || 'sem_termino';
   const a = document.createElement('a');
   a.href = url;
-  a.download = `Plano_de_Aula_${nomePart}_${dataPart}.doc`;
+  a.download = `Plano_de_Aula_${nomePart}_a_${dataPart}.doc`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -409,9 +576,21 @@ async function enviarPlano(){
     showStatus('WEBHOOK_URL não configurada no arquivo.', 'err');
     return;
   }
-  if (!val('nomeAluno')){
-    showStatus('Informe o nome do aluno antes de enviar.', 'err');
-    document.getElementById('nomeAluno').focus();
+  const isoInicio = document.getElementById('dataInicio').dataset.iso || '';
+  const isoTermino = document.getElementById('dataTermino').dataset.iso || '';
+  if (!isoInicio){
+    showStatus('Selecione a data de início do período.', 'err');
+    document.getElementById('dataInicio').focus();
+    return;
+  }
+  if (!isoTermino){
+    showStatus('Selecione a data de término do período.', 'err');
+    document.getElementById('dataTermino').focus();
+    return;
+  }
+  if (isoTermino < isoInicio){
+    showStatus('A data de término não pode ser anterior à de início.', 'err');
+    document.getElementById('dataTermino').focus();
     return;
   }
 
@@ -442,6 +621,12 @@ async function enviarPlano(){
 function limparFormulario(){
   if(!confirm('Limpar todos os campos deste plano?')) return;
   document.getElementById('planoForm').reset();
+  ['dataInicio', 'dataTermino'].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = '';
+    el.dataset.iso = '';
+  });
+  fecharCalendario();
   atualizarDataHora();
   showStatus('Formulário limpo.', 'ok');
 }
